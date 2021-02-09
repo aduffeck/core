@@ -2111,7 +2111,7 @@ def owncloudLog(server, folder):
 
 def owncloudServer():
 	return [{
-		'name': 'ocServer',
+		'name': 'oc-server',
 		'image': 'owncloud/server',
 		'pull': 'always',
 		'environment': {
@@ -2129,8 +2129,10 @@ def fileExternalPhpUnitTests(ctx):
 		'type': 'docker',
 		'name': 'FilesExternalUnitTests',
 		'steps':
-			owncloudServer() +
 			runPhpTest()
+		,
+		'services':
+			owncloudServer()
 		,
 		'depends_on': [],
 		'trigger': {
@@ -2147,7 +2149,7 @@ def runPhpTest():
 		"image": "owncloudci/php:7.4",
 		"pull": "always",
 		'commands': [
-			'wait-for-it -t 1200 ocServer:80',
+			'wait-for-it -t 20000 oc-server:80',
 			'cd /drone/src',
 			'docker ps'
 		],
