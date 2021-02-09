@@ -822,12 +822,9 @@ class OC {
 		// loader cache if instanceid is available without trying to create one.
 		$instanceId = \OC::$server->getSystemConfig()->getValue('instanceid', null);
 		if ($instanceId) {
-			try {
-				$memcacheFactory = \OC::$server->getMemCacheFactory();
-				'@phan-var \OC\MemCache\Factory $memcacheFactory';
-				self::$loader->setMemoryCache($memcacheFactory->createLocal('Autoloader'));
-			} catch (\Exception $ex) {
-			}
+			$memcacheFactory = \OC::$server->getMemCacheFactory();
+			'@phan-var \OC\MemCache\Factory $memcacheFactory';
+			self::$loader->setMemoryCache($memcacheFactory->createLocal('Autoloader'));
 		}
 	}
 
