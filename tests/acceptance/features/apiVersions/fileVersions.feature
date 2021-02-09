@@ -395,3 +395,16 @@ Feature: dav-versions
      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3PThjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bdc4-0b0000009157=8ccd2751-90a4-40f2-b9f3-61edf84421f4          | with = sign        |
      | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3OGNjZDI3NTEtOTBhNC00MGYyLWI5ZjMtNjFlZGY4NDQyMWY0     |  1284d238-aa92-42ce-bdc4-0b00000091578ccd2751-90a4-40f2-b9f3-61edf84421f4          | no = sign          |
      | c29tZS1yYW5kb20tZmlsZUlkPWFub3RoZXItcmFuZG9tLWZpbGVJZA==                                             | some-random-fileId=another-random-fileId                                           | some random string |
+
+  @issue-ocis-1238 @skipOnOcV10
+  Scenario: The version number is wrong after moving a file
+    Given user "Alice" has created folder "testFolder"
+    And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 1" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 2" to "textfile0.txt"
+    And user "Alice" has uploaded file with content "version 3" to "textfile0.txt"
+    When user "Alice" moves file "textfile0.txt" to "/testFolder/textfile0.txt" using the WebDAV API
+    And user "Alice" tries to get versions of file "/testFolder/textfile0.txt" from "Alice"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "4"
+#    And the number of versions should be "3"
