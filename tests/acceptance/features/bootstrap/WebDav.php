@@ -439,7 +439,7 @@ trait WebDav {
 				__METHOD__
 			);
 		}
-		$xmlPart = $resXml->xpath("//d:getlastmodified");
+		$xmlPart = $resXml->xpath("//d:prop[not(d:resourcetype/d:collection)]");
 		$actualNumber = \count($xmlPart);
 		Assert::assertEquals(
 			$number,
